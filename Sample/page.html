@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+
+<html lang="ja">
+<head>
+    <meta charset="utf-8" />
+    <script src="../SourceCode/season-reminder.js"></script>
+    <style>
+        * {
+            font-family: cursive;
+            font-size: 1em;
+        }
+        #wrapper {
+            border: solid 1px black;
+            position: relative;
+            height: 300px;
+            width: 500px;
+        }
+        #target {
+            background-color: grey;
+            border: solid 1px black;
+            border-radius: 75%;
+            bottom: 0;
+            color: red;
+            font-size: 2em;
+            left: 0;
+            margin: auto;
+            position: absolute;
+            right: 0;
+            height: 150px;
+            top: 0;
+            width: 150px;
+        }
+        .group {
+            border: dashed 1px grey;
+            vertical-align: middle;
+            width: 500px;
+        }
+        .name {
+            float: left;
+            margin: 5px 10px;
+            width: 200px;
+        }
+
+        .console {
+            clear: both;
+            margin: 5px 10px;
+            height: 1.5em;
+        }
+    </style>
+    <script>
+        var defaultColor;
+        function change() {
+            if (!defaultColor) {
+                // 要素の最初に適用されている色を基準とする
+                defaultColor = getComputedStyle(document.getElementById("target") , "").backgroundColor;
+            }
+            
+            // 季節を計算する基準日の指定
+            let today = new Date(document.getElementById("today").value ) || new Date();
+            let reminder = new SeasonReminder(today);
+
+            // 季節を反映する強さの指定
+            reminder.seasonInfluence = Number(document.getElementById("seasonInfluence").value) || 100;
+            let color = reminder.getRemindedColor(defaultColor);
+            document.getElementById("target").style.backgroundColor = color;
+        };
+    </script>
+</head>
+<body>
+    <div id="wrapper">
+        <div id="target"></div>
+    </div>
+    <div class="group">
+        <button class="console" onclick="change();">Change</button>
+        <div>
+            <div class="name">基準日（yyyy/mm/dd）</div>
+            <textarea id="today" class="console"></textarea>
+            <script>
+                let today = new Date();
+                document.getElementById("today").value = today.getFullYear() + "/" + ( today.getMonth() + 1 ) + "/" + today.getDate();
+            </script>
+        </div>
+        <div>
+            <div class="name">季節の影響度</div>
+            <textarea id="seasonInfluence" class="console">100</textarea>
+        </div>
+    </div>
+    
+</body>
+</html>
