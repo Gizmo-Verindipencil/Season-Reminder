@@ -1,6 +1,6 @@
 /**
- * SeasonReminder
- * @param {Date} today 基準となる日付
+ * SeasonReminderの新しいインスタンスを作成します。
+ * @param {Date} today 基準となる日付。
  */
 SeasonReminder = function(today) {
     this._today = today || new Date();
@@ -11,11 +11,12 @@ SeasonReminder = function(today) {
 };
 
 /**
- * 季節が最も色濃くなる日付（初期値）を取得する
- * @returns {Object} 季節の日付を格納したオブジェクト
+ * 季節が最も色濃くなる日付（初期値）を取得します。
+ * @returns {Object} 季節の日付を格納した連想配列を返します。
  */
 SeasonReminder.prototype._getDefaultSeasonDate = function() {
     const date = new Object();
+
     // 今年の四季を設定する
     date["spring"] = new Date(this._today.getFullYear() + "/3/21");     //春分
     date["summer"] = new Date(this._today.getFullYear() + "/6/22");     //夏至
@@ -31,15 +32,17 @@ SeasonReminder.prototype._getDefaultSeasonDate = function() {
     const nextSpring = new Date(date["spring"].getTime());
     nextSpring.setFullYear(nextSpring.getFullYear() + 1);
     date["nextSpring"] = nextSpring;
+
     return date;
 };
 
 /**
- * 季節を代表する色（初期値）を取得する
- * @return {Object} 季節の色を格納したオブジェクト
+ * 季節を代表する色（初期値）を取得します。
+ * @return {Object} 季節の色を格納した連想配列を返します。
  */
 SeasonReminder.prototype._getDefaultSeasonColor = function() {
     const color = new Object();
+
     // 今年の四季を設定する
     color["spring"] = "rgb(124, 252, 0)";
     color["summer"] = "rgb(255, 99, 71)";
@@ -49,14 +52,15 @@ SeasonReminder.prototype._getDefaultSeasonColor = function() {
     // 去年の最後、来年の最初を設定する
     color["lastWinter"] = color["winter"];
     color["nextSpring"] = color["spring"];
+
     return color;
 };
 
 /**
- * 日付間の日数差を取得する
- * @param {Date} date1 日付1 
- * @param {Date} date2 日付2
- * @returns {Number} 日数差
+ * 日付間の日数差を取得します。
+ * @param {Date} date1 日付1。
+ * @param {Date} date2 日付2。
+ * @returns {Number} 日数差を返します。
  */
 SeasonReminder.prototype._getDayDifference = function(date1, date2) {
     const dayMilliseconds = 86400000;
@@ -64,11 +68,12 @@ SeasonReminder.prototype._getDayDifference = function(date1, date2) {
 };
 
 /**
- * 基準日から算出した季節の度合い（0～100）を取得する
+ * 基準日から算出した季節の度合い（0～100）を取得します。
  * @returns {Array} 配列：オブジェクト（name：季節名、degree：度合い）
  */
 SeasonReminder.prototype._getSeasonDegrees = function() {
     const degrees = [];
+
     // 日数差を計算する
     for (var season in this._date) {
         degrees.push(
@@ -93,12 +98,13 @@ SeasonReminder.prototype._getSeasonDegrees = function() {
     const amount = degrees[0].degree + degrees[1].degree;
     degrees[0].degree = Math.round((degrees[0].degree / amount * 100));
     degrees[1].degree = Math.round((degrees[1].degree / amount * 100));
+
     return degrees;
 };
 
 /**
- * 季節を思い起こす色を取得する
- * @param {String} baseColor 対象となる色の表現 rgb(r, g, b）
+ * 季節を思い起こす色を取得します。
+ * @param {String} baseColor 対象となる色の表現を「rgb(r, g, b）」で返します。
  */
 SeasonReminder.prototype.getRemindedColor = function( baseColor ) {
     // rgb(r, g, b)の形式かどうかチェックする
@@ -136,9 +142,9 @@ SeasonReminder.prototype.getRemindedColor = function( baseColor ) {
 
 /**
  * 要素の指定されたプロパティがrgb(r, g, b)の
- * 表現であれば季節を反映した色に変換して置き換える
- * @param {Element} element 要素
- * @param {String} propertyName プロパティ名 
+ * 表現であれば、季節を反映した色に変換して置き換えます。
+ * @param {Element} element 要素。
+ * @param {String} propertyName プロパティ名。 
  */
 SeasonReminder.prototype.remind = function(element, propertyName) {
     // 対象のスタイルを取得する
@@ -159,8 +165,8 @@ SeasonReminder.prototype.remind = function(element, propertyName) {
 
 /**
  * 全ての要素の指定されたプロパティがrgb(r, g, b)の
- * 表現であれば季節を反映した色に変換して置き換える
- * @param {String} propertyName プロパティ名
+ * 表現であれば、季節を反映した色に変換して置き換えます。
+ * @param {String} propertyName プロパティ名。
  */
 SeasonReminder.prototype.remindAll = function(propertyName) {
     const all = document.getElementsByTagName("*");
